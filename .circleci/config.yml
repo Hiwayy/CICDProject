@@ -11,6 +11,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: npm
+          app-dir: ./with-jest-app
       - run:
           command: npm install jest-junit
       - run:
