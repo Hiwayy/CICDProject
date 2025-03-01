@@ -24,7 +24,7 @@ jobs:
       - store_test_results:
           path: ./test-results/
   install-dependencies:
-    executor: node-executor
+    executor: node/default
     steps:
       - checkout
       - restore_cache:
