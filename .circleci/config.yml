@@ -40,7 +40,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-    code-analysis:
+  code-analysis:
     executor: node/default
     steps:
       - checkout
