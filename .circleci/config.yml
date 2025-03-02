@@ -213,9 +213,15 @@ workflows:
       - clean-and-package:
           requires:
             - code-analysis
-      - clean-and-package
-      - unit-tests
-      - integration-tests
+      - unit-tests:
+          requires:
+            - clean-and-package
+      - integration-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              ignore: /^(feature|hotfix).*/
       - regression-tests
       - performance-tests
       - compatibility-tests
