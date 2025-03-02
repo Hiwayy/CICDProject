@@ -214,7 +214,7 @@ jobs:
 workflows:
   build-test-deploy:
     jobs:
-      #Excecuter sur toutes les branches
+#Excecuter sur toutes les branches
       - install-dependencies
       - code-analysis:
           requires:
@@ -231,6 +231,7 @@ workflows:
           filters:
             branches:
               ignore: /^(feature|hotfix).*/
+#Stage des tests
       - regression-tests:
           requires:
             - clean-and-package
@@ -271,6 +272,16 @@ workflows:
           filters:
             branches:
               only:
+                - integration
+                - main
+#Stage de déploiement
+      - prepare-deploy-env:
+          requires:
+            - unit-tests
+          filters:
+            branches:
+              only:
+                - develop
                 - integration
                 - main
       - prepare-deploy-env
