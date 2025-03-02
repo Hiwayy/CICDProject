@@ -284,6 +284,16 @@ workflows:
                 - develop
                 - integration
                 - main
+      - deploy-application:
+          requires:
+            - prepare-deploy-env
+            - integration-tests
+          filters:
+            branches:
+              only:
+                - develop
+                - integration
+                - main
       - prepare-deploy-env
       - deploy-application
       - verification-tests
