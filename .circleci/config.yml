@@ -193,6 +193,15 @@ jobs:
       - run:
           name: Finalize deployment (simulation)
           command: echo "Simulating final deployment steps..."
+  monitoring-setup:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Set up monitoring (simulation)
+          command: echo "Simulating monitoring and alerting setup..."
 workflows:
   build-and-test:
     jobs:
@@ -212,3 +221,4 @@ workflows:
       - functional-validation
       - load-tests
       - final-deployment
+      - monitoring-setup
