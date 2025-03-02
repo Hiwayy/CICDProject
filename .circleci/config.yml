@@ -175,6 +175,15 @@ jobs:
       - run:
           name: Run functional validation tests (simulation)
           command: echo "Simulating functional validation tests..."
+  load-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run load tests (simulation)
+          command: echo "Simulating load tests on deployed application..."
 workflows:
   build-and-test:
     jobs:
@@ -192,3 +201,4 @@ workflows:
       - deploy-application
       - verification-tests
       - functional-validation
+      - load-tests
