@@ -40,8 +40,24 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+    code-analysis:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run ESLint
+          command: npx eslint . --max-warnings=0 || echo "ESLint issues found"
+      - run:
+          name: Run TypeScript compiler check
+          command: npx tsc --noEmit || echo "TypeScript issues found"
+      - store_artifacts:
+          path: ./reports
+          destination: code-analysis-reports
 workflows:
   build-and-test:
     jobs:
       - test-node
       - install-dependencies
+      - code-analysis
