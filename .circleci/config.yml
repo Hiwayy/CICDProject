@@ -296,10 +296,45 @@ workflows:
                 - develop
                 - integration
                 - main
-      - prepare-deploy-env
-      - deploy-application
-      - verification-tests
-      - functional-validation
-      - load-tests
-      - final-deployment
-      - monitoring-setup
+      - verification-tests:
+          requires:
+            - deploy-application
+          filters:
+            branches:
+              only:
+                - develop
+                - integration
+                - main
+      - functional-validation:
+          requires:
+            - verification-tests
+          filters:
+            branches:
+              only:
+                - develop
+                - integration
+                - main
+      - load-tests:
+          requires:
+            - functional-validation
+          filters:
+            branches:
+              only:
+                - integration
+                - main
+      - final-deployment:
+          requires:
+            - load-tests
+          filters:
+            branches:
+              only:
+                - integration
+                - main
+      - monitoring-setup:
+          requires:
+            - final-deployment
+          filters:
+            branches:
+              only:
+                - integration
+                - main
