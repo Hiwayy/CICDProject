@@ -67,7 +67,7 @@ jobs:
           root: .
           paths:
             - .
-  # STAGE POUR LES TESTS
+# STAGE POUR LES TESTS
   unit-tests:
     executor: node/default
     steps:
@@ -122,6 +122,24 @@ jobs:
       - run:
           name: Run accessibility tests (simulation)
           command: echo "Simulating accessibility tests execution..."
+#stage DEPLOY
+  prepare-deploy-env:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Prepare deployment environment (simulation)
+          command: |
+            echo "Simulating environment preparation for branch: ${CIRCLE_BRANCH}"
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              echo "Preparing development environment"
+            elif [ "${CIRCLE_BRANCH}" == "integration" ]; then
+              echo "Preparing integration environment"
+            elif [ "${CIRCLE_BRANCH}" == "main" ]; then
+              echo "Preparing production environment"
+            fi
 workflows:
   build-and-test:
     jobs:
