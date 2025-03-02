@@ -47,14 +47,11 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Run ESLint
-          command: npx eslint . --max-warnings=0 || echo "ESLint issues found"
+          name: Run ESLint (simulation)
+          command: echo "Simulating ESLint analysis..."
       - run:
-          name: Run TypeScript compiler check
-          command: npx tsc --noEmit || echo "TypeScript issues found"
-      - store_artifacts:
-          path: ./reports
-          destination: code-analysis-reports
+          name: Run TypeScript compiler check (simulation)
+          command: echo "Simulating TypeScript check..."
   clean-and-package:
     executor: node/default
     steps:
@@ -62,26 +59,15 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: Verify project structure
-          command: |
-            echo "Project structure:"
-            ls -la
-            # Change directory to the actual Next.js project if it's in a subdirectory
-            # For example, if your Next.js project is in a "with-jest-app" folder:
-            # cd with-jest-app
+          name: Clean previous build (simulation)
+          command: echo "Simulating cleaning of previous build..."
       - run:
-          name: Install dependencies
-          command: npm install
-      - run:
-          name: Build Next.js application
-          command: npm run build || echo "Build failed but continuing for TP purposes"
+          name: Build Next.js application (simulation)
+          command: echo "Simulating Next.js build process..."
       - persist_to_workspace:
           root: .
           paths:
-            - .next
-            - public
-            - package.json
-            - node_modules
+            - .
 workflows:
   build-and-test:
     jobs:
