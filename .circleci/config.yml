@@ -276,6 +276,7 @@ workflows:
                 - main
 #Stage de déploiement
       - prepare-deploy-env:
+          name: prepare-dev-env
           requires:
             - unit-tests
           filters:
@@ -284,9 +285,10 @@ workflows:
                 - develop
                 - integration
                 - main
+                
       - deploy-application:
           requires:
-            - prepare-deploy-env
+            - prepare-dev-env
             - integration-tests
           filters:
             branches:
