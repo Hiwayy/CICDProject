@@ -113,6 +113,15 @@ jobs:
       - run:
           name: Run compatibility tests (simulation)
           command: echo "Simulating compatibility tests execution..."
+  accessibility-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run accessibility tests (simulation)
+          command: echo "Simulating accessibility tests execution..."
 workflows:
   build-and-test:
     jobs:
@@ -125,3 +134,4 @@ workflows:
       - regression-tests
       - performance-tests
       - compatibility-tests
+      - accessibility-tests
