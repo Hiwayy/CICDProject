@@ -104,6 +104,15 @@ jobs:
       - run:
           name: Run performance tests (simulation)
           command: echo "Simulating performance tests execution..."
+  compatibility-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run compatibility tests (simulation)
+          command: echo "Simulating compatibility tests execution..."
 workflows:
   build-and-test:
     jobs:
@@ -115,3 +124,4 @@ workflows:
       - integration-tests
       - regression-tests
       - performance-tests
+      - compatibilty-tests
