@@ -66,7 +66,7 @@ jobs:
           command: rm -rf .next || true
       - run:
           name: Build Next.js application
-          command: npm run build
+          command: npx next build
       - persist_to_workspace:
           root: .
           paths:
