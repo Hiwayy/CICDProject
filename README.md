@@ -74,17 +74,17 @@ Voici la liste des branches présentes dans le CI/CD, nous pouvons bien constate
 - Integration
 - Develop
 - feature/test-feature
-![Pipeline CI/CD branch list](images/branches.png)
+![Pipeline CI/CD branch list](images/branches.PNG)
 * **Pipeline "develop"**
 Voici la branche develop et comment les commits agissent sur l'environnement de dev.
-![Pipeline CI/CD develop branch](images/passdev.png)
+![Pipeline CI/CD develop branch](images/passdev.PNG)
 La pipeline de develop
-![Pipeline CI/CD develop branch](images/devpipelinefinal.png)
+![Pipeline CI/CD develop branch](images/devpipelinefinal.PNG)
 * **Pipeline "feature"**
-![Pipeline CI/CD feature branch](images/features.png)
+![Pipeline CI/CD feature branch](images/features.PNG)
 * **Pipeline "integration"**
-![Pipeline CI/CD integration branch](images/integration.png)
-![Pipeline CI/CD integration branch](images/integration2.png)
+![Pipeline CI/CD integration branch](images/integration.PNG)
+![Pipeline CI/CD integration branch](images/integration2.PNG)
 * **Pipeline "main"**
-![Pipeline CI/CD main branch](images/mainpipeline.png)
-![Pipeline CI/CD main branch](images/mainpipeline2.png)
+![Pipeline CI/CD main branch](images/mainpipeline.PNG)
+![Pipeline CI/CD main branch](images/mainpipeline2.PNG)
