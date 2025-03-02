@@ -3,7 +3,6 @@ orbs:
   node: circleci/node@5
 jobs:
   test-node:
-    # Install node dependencies and run tests
     executor: node/default
     environment:
       JEST_JUNIT_OUTPUT_DIR: ./test-results/
@@ -68,6 +67,16 @@ jobs:
           root: .
           paths:
             - .
+  # STAGE POUR LES TESTS
+  unit-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run unit tests (simulation)
+          command: echo "Simulating unit tests execution..."
 workflows:
   build-and-test:
     jobs:
@@ -75,3 +84,4 @@ workflows:
       - install-dependencies
       - code-analysis
       - clean-and-package
+      - unit-tests
