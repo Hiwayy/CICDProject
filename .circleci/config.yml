@@ -203,11 +203,16 @@ jobs:
           name: Set up monitoring (simulation)
           command: echo "Simulating monitoring and alerting setup..."
 workflows:
-  build-and-test:
+  build-test-deploy:
     jobs:
-      - test-node
+      #Excecuter sur toutes les branches
       - install-dependencies
-      - code-analysis
+      - code-analysis:
+          requires:
+            - install-dependencies
+      - clean-and-package:
+          requires:
+            - code-analysis
       - clean-and-package
       - unit-tests
       - integration-tests
