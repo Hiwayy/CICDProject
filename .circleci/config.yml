@@ -124,4 +124,4 @@ workflows:
       - integration-tests
       - regression-tests
       - performance-tests
-      - compatibilty-tests
+      - compatibility-tests
