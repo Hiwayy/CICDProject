@@ -157,6 +157,15 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "main" ]; then
               echo "Deploying to production server"
             fi
+  verification-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run verification tests (simulation)
+          command: echo "Simulating verification tests after deployment..."
 workflows:
   build-and-test:
     jobs:
@@ -172,3 +181,4 @@ workflows:
       - accessibility-tests
       - prepare-deploy-env
       - deploy-application
+      - verification-tests
