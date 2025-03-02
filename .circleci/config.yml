@@ -1,44 +1,52 @@
 version: 2.1
 orbs:
   node: circleci/node@5
-jobs:
+  # Job pour exécuter les tests avec Node.js
+  # Permet de s'assurer que les tests unitaires passent correctement
   test-node:
     executor: node/default
     environment:
-      JEST_JUNIT_OUTPUT_DIR: ./test-results/
+      JEST_JUNIT_OUTPUT_DIR: ./test-results/  # Stockage des résultats des tests
     steps:
-      - checkout
-      - node/install-packages:
+      - checkout  # Récupération du code source
+      - node/install-packages:  # Installation des packages NPM
           pkg-manager: npm
       - run:
-          command: npm install jest-junit
+          command: npm install jest-junit  # Installation du reporter JUnit pour Jest
       - run:
           name: Run tests
-          command: npm run test:ci
+          command: npm run test:ci  # Exécution des tests en mode CI
       - run:
-          name: Resolve dependencies
+          name: Resolve dependencies  # Résolution des problèmes de dépendances dupliquées a cause du node_modules
           command: |
             npm dedupe
             npm ls react react-dom
-      - store_test_results:
+      - store_test_results:  # Stockage des résultats des tests pour visualisation dans CircleCI
           path: ./test-results/
+
+  # --- ÉTAPE BUILD ---
+
+  # Ce job installe toutes les dépendances nécessaires au projet
   install-dependencies:
     executor: node/default
     steps:
-      - checkout
-      - restore_cache:
+      - checkout  # Récupération du code source
+      - restore_cache:  # Restauration du cache des dépendances pour accélérer le build
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-      - node/install-packages:
+      - node/install-packages:  # Installation des packages npm
           pkg-manager: npm
       - run:
           name: Resolve dependencies
-          command: npm dedupe
-      - save_cache:
+          command: npm dedupe  # Elimination des dépendances dupliquées
+      - save_cache:  # Sauvegarde du cache pour les prochains builds
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+  # Job pour analyser la qualité du code
+  # Vérifie que le code respecte les standards de qualité
   code-analysis:
     executor: node/default
     steps:
@@ -47,10 +55,13 @@ jobs:
           at: .
       - run:
           name: Run ESLint (simulation)
-          command: echo "Simulating ESLint analysis..."
+          command: echo "Simulating ESLint analysis..."  # Simulation de l'analyse ESLint
       - run:
           name: Run TypeScript compiler check (simulation)
-          command: echo "Simulating TypeScript check..."
+          command: echo "Simulating TypeScript check..."  # Simulation de la vérification TypeScript
+
+  # Job pour nettoyer et construire l'application
+  # Prépare l'application pour les tests et le déploiement
   clean-and-package:
     executor: node/default
     steps:
@@ -59,15 +70,18 @@ jobs:
           at: .
       - run:
           name: Clean previous build (simulation)
-          command: echo "Simulating cleaning of previous build..."
+          command: echo "Simulating cleaning of previous build..."  # Simulation du nettoyage
       - run:
           name: Build Next.js application (simulation)
-          command: echo "Simulating Next.js build process..."
-      - persist_to_workspace:
+          command: echo "Simulating Next.js build process..."  # Simulation du build Next.js
+      - persist_to_workspace:  # Persistance des fichiers pour les jobs suivants
           root: .
           paths:
             - .
-# STAGE POUR LES TESTS
+
+  # --- ÉTAPE TESTS ---
+  # Job pour exécuter les tests unitaires
+  # Vérifie que chaque composant fonctionne correctement de manière isolée
   unit-tests:
     executor: node/default
     steps:
@@ -76,7 +90,10 @@ jobs:
           at: .
       - run:
           name: Run unit tests (simulation)
-          command: echo "Simulating unit tests execution..."
+          command: echo "Simulating unit tests execution..."  # Simulation des tests unitaires
+
+  # Job pour les tests d'intégration
+  # Vérifie que les différents composants fonctionnent bien ensemble
   integration-tests:
     executor: node/default
     steps:
@@ -85,7 +102,10 @@ jobs:
           at: .
       - run:
           name: Run integration tests (simulation)
-          command: echo "Simulating integration tests execution..."
+          command: echo "Simulating integration tests execution..."  # Simulation des tests d'intégration
+
+  # Job pour les tests de régression
+  # S'assure que les modifications n'ont pas cassé des fonctionnalités existantes
   regression-tests:
     executor: node/default
     steps:
@@ -94,7 +114,10 @@ jobs:
           at: .
       - run:
           name: Run regression tests (simulation)
-          command: echo "Simulating regression tests execution..."
+          command: echo "Simulating regression tests execution..."  # Simulation des tests de régression
+
+  # Job pour les tests de performance
+  # Vérifie que l'application répond aux critères de performance
   performance-tests:
     executor: node/default
     steps:
@@ -103,7 +126,10 @@ jobs:
           at: .
       - run:
           name: Run performance tests (simulation)
-          command: echo "Simulating performance tests execution..."
+          command: echo "Simulating performance tests execution..."  # Simulation des tests de performance
+
+  # Job pour les tests de sécurité
+  # Détecte les vulnérabilités potentielles dans l'application
   security-tests:
     executor: node/default
     steps:
@@ -112,7 +138,10 @@ jobs:
           at: .
       - run:
           name: Run security tests (simulation)
-          command: echo "Simulating security tests execution..."
+          command: echo "Simulating security tests execution..."  # Simulation des tests de sécurité
+
+  # Job pour les tests de compatibilité
+  # Vérifie que l'application fonctionne sur différents environnements
   compatibility-tests:
     executor: node/default
     steps:
@@ -121,7 +150,10 @@ jobs:
           at: .
       - run:
           name: Run compatibility tests (simulation)
-          command: echo "Simulating compatibility tests execution..."
+          command: echo "Simulating compatibility tests execution..."  # Simulation des tests de compatibilité
+
+  # Job pour les tests d'accessibilité
+  # S'assure que l'application est accessible à tous les utilisateurs
   accessibility-tests:
     executor: node/default
     steps:
@@ -130,8 +162,11 @@ jobs:
           at: .
       - run:
           name: Run accessibility tests (simulation)
-          command: echo "Simulating accessibility tests execution..."
-#stage DEPLOY
+          command: echo "Simulating accessibility tests execution..."  # Simulation des tests d'accessibilité
+
+  # --- ÉTAPE DEPLOY ---
+  # Job pour préparer l'environnement de déploiement
+  # Configure l'environnement en fonction de la branche
   prepare-deploy-env:
     executor: node/default
     steps:
@@ -143,12 +178,15 @@ jobs:
           command: |
             echo "Simulating environment preparation for branch: ${CIRCLE_BRANCH}"
             if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-              echo "Preparing development environment"
+              echo "Preparing development environment"  # Préparation pour l'environnement de développement
             elif [ "${CIRCLE_BRANCH}" == "integration" ]; then
-              echo "Preparing integration environment"
+              echo "Preparing integration environment"  # Préparation pour l'environnement d'intégration
             elif [ "${CIRCLE_BRANCH}" == "main" ]; then
-              echo "Preparing production environment"
+              echo "Preparing production environment"  # Préparation pour l'environnement de production
             fi
+
+  # Job pour déployer l'application
+  # Déploie l'application sur l'environnement approprié
   deploy-application:
     executor: node/default
     steps:
@@ -160,12 +198,15 @@ jobs:
           command: |
             echo "Simulating deployment for branch: ${CIRCLE_BRANCH}"
             if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-              echo "Deploying to development server"
+              echo "Deploying to development server"  # Déploiement sur le serveur de développement
             elif [ "${CIRCLE_BRANCH}" == "integration" ]; then
-              echo "Deploying to integration server"
+              echo "Deploying to integration server"  # Déploiement sur le serveur d'intégration
             elif [ "${CIRCLE_BRANCH}" == "main" ]; then
-              echo "Deploying to production server"
+              echo "Deploying to production server"  # Déploiement sur le serveur de production
             fi
+
+  # Job pour les tests de vérification post-déploiement
+  # Vérifie que l'application a été déployée correctement
   verification-tests:
     executor: node/default
     steps:
@@ -174,7 +215,10 @@ jobs:
           at: .
       - run:
           name: Run verification tests (simulation)
-          command: echo "Simulating verification tests after deployment..."
+          command: echo "Simulating verification tests after deployment..."  # Simulation des tests de vérification
+
+  # Job pour la validation fonctionnelle
+  # Vérifie que les fonctionnalités de l'application fonctionnent dans l'environnement déployé
   functional-validation:
     executor: node/default
     steps:
@@ -183,7 +227,10 @@ jobs:
           at: .
       - run:
           name: Run functional validation tests (simulation)
-          command: echo "Simulating functional validation tests..."
+          command: echo "Simulating functional validation tests..."  # Simulation des tests de validation fonctionnelle
+
+  # Job pour les tests de charge
+  # Vérifie que l'application peut gérer la charge prévue
   load-tests:
     executor: node/default
     steps:
@@ -192,7 +239,10 @@ jobs:
           at: .
       - run:
           name: Run load tests (simulation)
-          command: echo "Simulating load tests on deployed application..."
+          command: echo "Simulating load tests on deployed application..."  # Simulation des tests de charge
+
+  # Job pour le déploiement final
+  # Finalise le déploiement après validation
   final-deployment:
     executor: node/default
     steps:
@@ -201,7 +251,10 @@ jobs:
           at: .
       - run:
           name: Finalize deployment (simulation)
-          command: echo "Simulating final deployment steps..."
+          command: echo "Simulating final deployment steps..."  # Simulation des étapes finales de déploiement
+
+  # Job pour configurer la surveillance
+  # Met en place le monitoring et les alertes
   monitoring-setup:
     executor: node/default
     steps:
@@ -210,7 +263,7 @@ jobs:
           at: .
       - run:
           name: Set up monitoring (simulation)
-          command: echo "Simulating monitoring and alerting setup..."
+          command: echo "Simulating monitoring and alerting setup..."  # Simulation de la configuration du monitoring
 workflows:
   build-test-deploy:
     jobs:
