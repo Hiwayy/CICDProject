@@ -222,7 +222,15 @@ workflows:
           filters:
             branches:
               ignore: /^(feature|hotfix).*/
-      - regression-tests
+      - regression-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              only:
+                - develop
+                - integration
+                - main
       - performance-tests
       - compatibility-tests
       - accessibility-tests
