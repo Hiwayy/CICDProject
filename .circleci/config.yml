@@ -140,6 +140,23 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "main" ]; then
               echo "Preparing production environment"
             fi
+  deploy-application:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy application (simulation)
+          command: |
+            echo "Simulating deployment for branch: ${CIRCLE_BRANCH}"
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              echo "Deploying to development server"
+            elif [ "${CIRCLE_BRANCH}" == "integration" ]; then
+              echo "Deploying to integration server"
+            elif [ "${CIRCLE_BRANCH}" == "main" ]; then
+              echo "Deploying to production server"
+            fi
 workflows:
   build-and-test:
     jobs:
@@ -153,3 +170,5 @@ workflows:
       - performance-tests
       - compatibility-tests
       - accessibility-tests
+      - prepare-deploy-env
+      - deploy-application
