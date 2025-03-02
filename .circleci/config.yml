@@ -166,6 +166,15 @@ jobs:
       - run:
           name: Run verification tests (simulation)
           command: echo "Simulating verification tests after deployment..."
+  functional-validation:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run functional validation tests (simulation)
+          command: echo "Simulating functional validation tests..."
 workflows:
   build-and-test:
     jobs:
@@ -182,3 +191,4 @@ workflows:
       - prepare-deploy-env
       - deploy-application
       - verification-tests
+      - functional-validation
