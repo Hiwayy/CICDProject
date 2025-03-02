@@ -55,9 +55,29 @@ jobs:
       - store_artifacts:
           path: ./reports
           destination: code-analysis-reports
+  clean-and-package:
+  executor: node/default
+  steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - run:
+        name: Clean previous build
+        command: rm -rf .next || true
+    - run:
+        name: Build Next.js application
+        command: npm run build
+    - persist_to_workspace:
+        root: .
+        paths:
+          - .next
+          - public
+          - package.json
+          - node_modules
 workflows:
   build-and-test:
     jobs:
       - test-node
       - install-dependencies
       - code-analysis
+      - clean-and-package
