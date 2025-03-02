@@ -114,3 +114,4 @@ workflows:
       - unit-tests
       - integration-tests
       - regression-tests
+      - performance-tests
