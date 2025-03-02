@@ -3,6 +3,7 @@ orbs:
   node: circleci/node@5
   # Job pour exécuter les tests avec Node.js
   # Permet de s'assurer que les tests unitaires passent correctement
+jobs:
   test-node:
     executor: node/default
     environment:
