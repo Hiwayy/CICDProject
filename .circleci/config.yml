@@ -231,9 +231,39 @@ workflows:
                 - develop
                 - integration
                 - main
-      - performance-tests
-      - compatibility-tests
-      - accessibility-tests
+      - performance-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              only:
+                - integration
+                - main
+      - security-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              only:
+                - develop
+                - integration
+                - main
+      - compatibility-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              only:
+                - integration
+                - main
+      - accessibility-tests:
+          requires:
+            - clean-and-package
+          filters:
+            branches:
+              only:
+                - integration
+                - main
       - prepare-deploy-env
       - deploy-application
       - verification-tests
