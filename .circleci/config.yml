@@ -86,6 +86,15 @@ jobs:
       - run:
           name: Run integration tests (simulation)
           command: echo "Simulating integration tests execution..."
+  regression-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run regression tests (simulation)
+          command: echo "Simulating regression tests execution..."
 workflows:
   build-and-test:
     jobs:
@@ -94,3 +103,5 @@ workflows:
       - code-analysis
       - clean-and-package
       - unit-tests
+      - integration-tests
+      - regression-tests
