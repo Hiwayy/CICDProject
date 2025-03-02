@@ -184,6 +184,15 @@ jobs:
       - run:
           name: Run load tests (simulation)
           command: echo "Simulating load tests on deployed application..."
+  final-deployment:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Finalize deployment (simulation)
+          command: echo "Simulating final deployment steps..."
 workflows:
   build-and-test:
     jobs:
@@ -202,3 +211,4 @@ workflows:
       - verification-tests
       - functional-validation
       - load-tests
+      - final-deployment
