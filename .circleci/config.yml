@@ -95,6 +95,15 @@ jobs:
       - run:
           name: Run regression tests (simulation)
           command: echo "Simulating regression tests execution..."
+  performance-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run performance tests (simulation)
+          command: echo "Simulating performance tests execution..."
 workflows:
   build-and-test:
     jobs:
