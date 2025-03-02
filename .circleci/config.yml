@@ -104,6 +104,15 @@ jobs:
       - run:
           name: Run performance tests (simulation)
           command: echo "Simulating performance tests execution..."
+  security-tests:
+    executor: node/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run security tests (simulation)
+          command: echo "Simulating security tests execution..."
   compatibility-tests:
     executor: node/default
     steps:
